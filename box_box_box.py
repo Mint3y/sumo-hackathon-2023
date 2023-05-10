@@ -2,8 +2,6 @@ from src.box.sensor     import Header, Data
 from src.box.reader     import SensorReader
 from src.box.visualiser import Visualiser
 
-
-
 def main():
     ###################
     ### Objective 1 ###
