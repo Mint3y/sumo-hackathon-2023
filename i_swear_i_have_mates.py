@@ -1,96 +1,6 @@
-class Move:
-    def __init__(self, start_position : tuple, end_position : tuple):
-        self.start = start_position
-        self.end = end_position
-
-class Colour:
-    WHITE = 0
-    BLACK = 1
-
-class Direction:
-    UP = -1
-    DOWN = 1
-
-class Piece:
-    def __init__(self, colour : int):
-        self.colour = colour
-
-class King:
-    def __init__(self, colour : int):
-        super().__init__(colour)
-
-    def get_possible_moves(self, start_position : tuple, size : int):
-        possible_moves = []
-        
-        # Add moves to adjacent tiles
-        for i in range(-1, 1):
-            # Skip the move if it places the piece outside of the board
-            if ((start_position[0] + i) not in range(size)):
-                continue
-
-            for j in range(-1, 1):
-                # Skip the move if it places the piece outside of the board
-                if ((start_position[1] + j) not in range(size)):
-                    continue
-                
-                end_position = (start_position[0] + i,
-                                start_position[1] + j)
-
-                possible_moves.append(Move(start_position, end_position))
-        
-        return possible_moves
-
-class Queen:
-    def __init__(self, colour : int):
-        super().__init__(colour)
-
-class Rook:
-    def __init__(self, colour : int):
-        super().__init__(colour)
-
-class Bishop:
-    def __init__(self, colour : int):
-        super().__init__(colour)
-
-class Knight:
-    def __init__(self, colour : int):
-        super().__init__(colour)
-
-class Pawn:
-    def __init__(self, colour : int):
-        super().__init__(colour)
-
-    def get_possible_moves(self, start_position : tuple, size : int):
-        possible_moves = []
-        
-        direction = 0
-
-        # Determine the direction of the pawn using its colour
-        if (self.colour == Colour.WHITE):
-            direction = Direction.UP
-        elif (self.colour == Colour.BLACK):
-            direction = Direction.DOWN
-        else:
-            raise ValueError("Pawn could not determine direction due to having "
-                             "an invalid colour.")
-
-        # Return no moves if the pawn is at the end of the board
-        if (((direction == Direction.UP)   and (0        == start_position[0]))
-        or  ((direction == Direction.DOWN) and (size - 1 == start_position[0]))):
-            return possible_moves
-
-        # Add moves to forward tile and forward left and right tiles
-        for i in range(-1, 1):
-            # Skip the move if it places the piece outside of the board
-            if ((start_position[0] + i) not in range(size)):
-                continue
-                
-            end_position = (start_position[0] + i,
-                            start_position[1] + direction)
-            
-            possible_moves.append(Move(start_position, end_position))
-        
-        return possible_moves
+from src.chess.pieces import Colour, Piece
+from src.chess.pieces import Pawn, Knight, Bishop, Rook, Queen, King
+from src.chess.moves  import Move
 
 class PieceCreator:
     @staticmethod
@@ -173,6 +83,7 @@ class Board:
 
     def possible_moves(self, colour : int) -> list:
         possible_moves = []
+        # .extend(list)
         pass
 
 def main():
