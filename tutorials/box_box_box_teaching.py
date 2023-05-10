@@ -14,14 +14,14 @@ file_contents_buffer = ""
 # The file automatically closes at the end of the 'with' block
 # Without the 'with' block, this would look like:
 
-# splits_file = open(filename, 'r')
-# file_contents_buffer = splits_file.read()
-# close(splits_file)
+splits_file = open(filename, 'r')
+file_contents_buffer = splits_file.read()
+close(splits_file)
 ##############################################################
 
 # Open the file in read-only mode
-with open(filename, 'r') as splits_file:
-    file_contents_buffer = splits_file.read()
+# with open(filename, 'r') as splits_file:
+#     file_contents_buffer = splits_file.read()
 
 input_lines = file_contents_buffer.split('\n')
 
@@ -35,6 +35,21 @@ input_lines = file_contents_buffer.split('\n')
 # We would use list comprehensions, however due to there being a beginner
 # in our team we will avoid them.
 ############################################################################
+
+lines = [
+    "3, 5",
+    "160, 30, 15.343322, 23.3432, 39.43554",
+    "160, 30, 15.343322, 23.3432, 39.43554",
+    "160, 30, 15.343322, 23.3432, 39.43554"
+]
+
+parsed_lines = [
+    ["3", "5"],
+    ["160", "30", "15.343322", "23.3432", "39.43554"],
+    ["160", "30", "15.343322", "23.3432", "39.43554"],
+    ["160", "30", "15.343322", "23.3432", "39.43554"],
+    ["160", "30", "15.343322", "23.3432", "39.43554"]
+]
 
 input_data = []
 
