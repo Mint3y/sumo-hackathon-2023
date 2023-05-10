@@ -38,6 +38,7 @@ class Board:
     }
 
     def __init__(self, board_input : list):
+        self.board = board_input
         self.pieces = self.generate_board(board_input)
 
     def generate_board(self, board_input : list):
@@ -85,6 +86,49 @@ class Board:
         possible_moves = []
         # .extend(list)
         pass
+
+    def find_king(self, colour : int) -> tuple:
+        king_position = None
+
+        # Find the king with the corresponding colour's position
+        i_end = len(self.board)
+        for i in range(i_end):
+
+            j_end = len(self.board[i])
+            for j in range(j_end):
+                # Ignore empty tiles
+                if ('0' == self.board[i][j]):
+                    continue
+                
+                # If we find the king, store the position and stop the search
+                if (king_id == self.board[i][j]):
+                    king_position = (i, j)
+                    break
+            
+            # If the king's position has been found, stop the search
+            if (None != king_position):
+                break
+        
+        return king_position
+
+    def in_check(self, colour : int) -> bool:
+        # White King : 'k', Black King : 'K'
+        king_id = ('K' if (colour == Colour.BLACK) else 'k')
+
+        king_position = self.find_king(colour)
+
+        # If no king of the colour is found
+        if (None == king_position):
+            raise ValueError("Board has no king of one of the colours.")
+
+        possible_moves = self.possible_moves(colour)
+
+        # The king is in check if any of the moves end at the king
+        for move in possible_moves:
+            if (move.end == king_position):
+                return True
+        
+        return False
 
 def main():
     lines = []
