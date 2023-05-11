@@ -1,6 +1,6 @@
 from src.box.sensor     import Header, Data
 from src.box.reader     import SensorReader
-from src.box.visualiser import Visualiser
+from src.box.visualiser import Visualiser, SplitAnimator
 
 def main():
     ###################
@@ -20,7 +20,11 @@ def main():
     ###################
     visualiser = Visualiser(header, data)
 
-    print("Animation of the path is done in blocks. Please wait.")
+    print("Animation may take a while to load. Please wait.")
+
+    SplitAnimator.ANIMATION_SPEED = 0.03
+
+    # visualiser.plot_lines()
     visualiser.plot_lines_animated()
     visualiser.plot_points('ro')
     visualiser.plot_labels()

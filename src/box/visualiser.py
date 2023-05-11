@@ -6,6 +6,8 @@ from itertools import count
 from .sensor import Header, Data
 
 class SplitAnimator:
+    ANIMATION_SPEED = 0.01
+
     def __init__(self, fig, ax, sensors):
         self.fig = fig
         self.ax = ax
@@ -18,6 +20,15 @@ class SplitAnimator:
         # Static (completed) path
         self.static_path = ([sensors[0].position[0]], [sensors[0].position[1]])
 
+        # Positions for the animated path
+        self.previous_sensor_position = sensors[0].position
+        self.current_position = self.previous_sensor_position
+        self.next_sensor_position = sensors[self.sensor_index].position
+
+        # Animated path between sensors
+        self.animated_path = ([self.previous_sensor_position[0], self.next_sensor_position[0]],
+                              [self.previous_sensor_position[1], self.next_sensor_position[1]])
+
         # Percentage between previous and next sensor
         self.split_percentage = 0
 
@@ -26,14 +37,24 @@ class SplitAnimator:
 
     def update(self, i):
         idx = next(self.counter)
-        self.split_percentage += 0.01
+        self.split_percentage += self.ANIMATION_SPEED
+
+        self.current_position = self.lerp(self.previous_sensor_position,
+                                          self.next_sensor_position,
+                                          self.split_percentage)
+
+        self.animated_path[0][-1] = self.current_position[0]
+        self.animated_path[1][-1] = self.current_position[1]
+
+        # Plot the static path
+        # self.ax.plot(self.static_path[0], self.static_path[1], 'g', linewidth=2.0)
+
+        # Draw the animated path
+        self.ax.plot(self.animated_path[0], self.animated_path[1], 'g', linewidth=2.0)
 
         # If the split is complete
         if (1 <= self.split_percentage):
             self.split_percentage = 0
-
-            # Plot the static path
-            self.ax.plot(self.static_path[0], self.static_path[1], 'g', linewidth=2.0)
 
             # Go to the next sensor
             self.sensor_index += 1
@@ -44,9 +65,17 @@ class SplitAnimator:
                 self.static_path[0].clear()
                 self.static_path[1].clear()
 
+            # Update the next sensor position
+            self.previous_sensor_position = self.next_sensor_position
+            self.next_sensor_position = self.sensors[self.sensor_index].position
+
             # Add the new end point to the static path
             self.static_path[0].append(self.sensors[self.sensor_index].position[0])
             self.static_path[1].append(self.sensors[self.sensor_index].position[1])
+
+            # Move the start of the animated path to the current position
+            self.animated_path[0][0] = self.current_position[0]
+            self.animated_path[1][0] = self.current_position[1]
 
     def lerp(self, a : tuple, b : tuple, c : float):
         return (a[0] + (b[0] - a[0]) * c,
