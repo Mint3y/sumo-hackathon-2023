@@ -20,7 +20,8 @@ def main():
     ###################
     visualiser = Visualiser(header, data)
 
-    visualiser.plot_lines('g')
+    print("Animation of the path is done in blocks. Please wait.")
+    visualiser.plot_lines_animated()
     visualiser.plot_points('ro')
     visualiser.plot_labels()
 
